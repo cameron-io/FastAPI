@@ -1,6 +1,9 @@
 from sqlalchemy import Column, Integer, DateTime, String, ForeignKey
-from sqlalchemy.orm.relationships import Relationship
+from sqlalchemy.orm import Mapped, relationship
 from .common.base import Base
+from .experience import Experience
+from .education import Education
+from .social import Social
 
 class Profile(Base):
     __tablename__ = 'profile'
@@ -13,7 +16,7 @@ class Profile(Base):
     skills = Column(String(255), nullable=False)
     bio = Column(String(255))
     githubusername = Column(String(255))
-    experience = Relationship('Experience', backref='profile', lazy=True)
-    Education = Relationship('Education', backref='profile', lazy=True)
-    social = Relationship('Social', backref='profile', lazy=True)
+    experience: Mapped[Experience] = relationship('Experience', backref='profile', lazy=True)
+    education: Mapped[Education] = relationship('Education', backref='profile', lazy=True)
+    social: Mapped[Social] = relationship('Social', backref='profile', lazy=True)
     created_at = Column(DateTime)
