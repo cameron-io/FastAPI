@@ -1,0 +1,32 @@
+
+volumes:
+  db-data:
+
+services:
+
+  server:
+    container_name: ${SERVER_NAME}
+    image: ${SERVER_NAME}:latest
+    depends_on:
+      - db
+    restart: always
+    ports:
+     - 5000:5000
+
+  db:
+    container_name: pg
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -d ${DATABASE_NAME} -U ${DATABASE_USER}"]
+        interval: 30s
+        timeout: 5s
+        retries: 5
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
