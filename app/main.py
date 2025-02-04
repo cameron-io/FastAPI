@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
-from api.models import Base
-from api.utils import env
+from .api.models import Base
+from .api.utils import env
 
 if (load_dotenv() != True):
     exit('Failed to initialize environment')
