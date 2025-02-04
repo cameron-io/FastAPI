@@ -1,13 +1,16 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy.orm import mapped_column
 from .common.base import Base
 
 class Social(Base):
     __tablename__ = 'social'
 
-    id = Column(Integer, primary_key = True)
-    profile_id = Column(Integer, ForeignKey('profile.id'), nullable=False)
-    youtube = Column(String(255))
-    twitter = Column(String(255))
-    facebook = Column(String(255))
-    linkedin = Column(String(255))
-    instagram = Column(String(255))
+    id = mapped_column(Integer, primary_key = True)
+
+    youtube = mapped_column(String(255))
+    twitter = mapped_column(String(255))
+    facebook = mapped_column(String(255))
+    linkedin = mapped_column(String(255))
+    instagram = mapped_column(String(255))
+
+    profile_id = mapped_column(Integer, ForeignKey('profile.id'), nullable=False)
