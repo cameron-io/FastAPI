@@ -5,6 +5,10 @@ include .env
 dev: build
 	docker compose up -d server
 
+.PHONY: run
+run:
+	fastapi dev app/main.py --host=$(SERVER_HOST) --port=8000
+
 .PHONY: build
 build:
 	docker build -t $(SERVER_NAME):$(BUILD_TAG) .
@@ -12,6 +16,14 @@ build:
 .PHONY: deps
 deps: __pyenv__
 	pip3 install -r requirements.txt
+
+.PHONY: tests
+tests: db-local
+	pytest
+
+.PHONY: db-local
+db-local:
+	docker compose up -d db
 
 .PHONY: down
 down:
