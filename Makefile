@@ -6,7 +6,7 @@ dev: build
 	docker compose up -d server
 
 .PHONY: build
-build: $(SERVER_SOURCE)
+build:
 	docker build -t $(SERVER_NAME):$(BUILD_TAG) .
 
 .PHONY: deps
