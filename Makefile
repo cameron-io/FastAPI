@@ -1,13 +1,20 @@
 #!make
 include .env
 
-.PHONY: dev
-dev: build
+FAST_API_SRC := app/main.py
+FAST_API_OPTS := --host=$(SERVER_HOST) --port=8000
+
+.PHONY: build-run
+build-run: build
 	docker compose up -d server
 
 .PHONY: run
 run:
-	fastapi dev app/main.py --host=$(SERVER_HOST) --port=8000
+	fastapi run $(FAST_API_SRC) $(FAST_API_OPTS)
+
+.PHONY: dev
+dev:
+	fastapi dev $(FAST_API_SRC) $(FAST_API_OPTS)
 
 .PHONY: build
 build:
