@@ -1,8 +1,8 @@
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from ..api.utils import env
-from ..main import app
+from app.utils import env
+from app.main import app
 
 @pytest.mark.anyio
 async def test_root():
