@@ -11,4 +11,4 @@
 ### Usage:
 
 1.  update `.env` with local environment variables
-2.  `make dev`
+2.  `make build-run`
