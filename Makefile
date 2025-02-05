@@ -13,7 +13,9 @@ run:
 	fastapi run $(FAST_API_SRC) $(FAST_API_OPTS)
 
 .PHONY: dev
-dev:
+dev: export DATABASE_HOST=localhost
+dev: export DATABASE_URI=${DATABASE_ENGINE}://${DATABASE_USER}:${DATABASE_PASS}@${DATABASE_HOST}/${DATABASE_NAME}
+dev: db-local
 	fastapi dev $(FAST_API_SRC) $(FAST_API_OPTS)
 
 .PHONY: build
