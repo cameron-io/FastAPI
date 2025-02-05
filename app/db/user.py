@@ -1,8 +1,17 @@
+from sqlalchemy.orm import sessionmaker
 import uuid
 
-from app.main import get_db
-
+from app.main import engine
 from app.models.account import Account
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def get_user_by_email(user_email):
     return Account.query\

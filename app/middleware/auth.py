@@ -1,13 +1,15 @@
 import jwt
+from fastapi import Request
 from app.db.user import get_user_by_public_id
-from app.main import app
+from app.utils import env
 
-def extract_claims_from_request(request):
-    token = request.cookies['token']
+def extract_claims_from_request(request: Request):
+    token = request.cookies.get('token')
     if token == None:
         None
-    try:
-        data = jwt.decode(token, app.config['SECRET_KEY'])
-        return get_user_by_public_id(data['public_id'])
-    except:
-        None
+    else:
+        try:
+            data = jwt.decode(token, env.get('SECRET_KEY'))
+            return get_user_by_public_id(data['public_id'])
+        except:
+            None
