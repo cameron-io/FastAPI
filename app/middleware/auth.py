@@ -9,7 +9,7 @@ def extract_claims_from_request(request: Request):
         None
     else:
         try:
-            data = jwt.decode(token, env.get('SECRET_KEY'))
+            data = jwt.decode(token, env.getvar('SECRET_KEY'))
             return get_user_by_public_id(data['public_id'])
         except:
             None

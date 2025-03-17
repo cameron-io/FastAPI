@@ -13,7 +13,7 @@ app = FastAPI()
 from sqlalchemy import create_engine
 from .models import Base
 
-engine = create_engine(env.get('DATABASE_URI'))
+engine = create_engine(env.getvar('DATABASE_URI'))
 Base.metadata.create_all(bind=engine)
 
 # Middleware
@@ -27,4 +27,4 @@ async def auth_pre_handle(request: Request, call_next):
     return await call_next(request)
 
 # Routes
-from .http.user import read_item, read_root
+from .api.user import *
