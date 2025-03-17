@@ -1,6 +1,5 @@
-from typing import Union
 from app.main import app
-from app.utils.env import getvar
+from app.utils import env
 from app.db.user import get_user_by_email, create_user_account
 from app.dto.user import Login, Register
 from app.services.mail import send_mail
@@ -12,7 +11,9 @@ def mail_token(to_addr: str, token: str):
     html = f"""
         <html>
             <body>
-                <a href="http://localhost:5000/api/accounts/login?token={token}">Login Link</a>
+                <a href="{env.getvar('SERVER_ADDR')}/api/accounts/login?token={token}">
+                    Login Link
+                </a>
             </body>
         </html>
         """
@@ -50,7 +51,7 @@ async def login(payload: Login, response: Response):
         'public_id': account.public_id,
         'exp' : datetime.now(timezone.utc) + timedelta(minutes = 30)
     }
-    token = jwt.encode(token_payload, getvar('SECRET_KEY'))
+    token = jwt.encode(token_payload, env.getvar('SECRET_KEY'))
 
     mail_token(payload.email, token)
 

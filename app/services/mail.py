@@ -11,7 +11,7 @@ def send_mail(to_addr: str, html: str) -> None:
 
     mime_html = MIMEText(html, "html")
     message.attach(mime_html)
-    
+
     # Create a secure SSL context
     context = ssl.create_default_context()
 
