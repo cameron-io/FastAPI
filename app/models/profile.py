@@ -19,8 +19,8 @@ class Profile(Base):
     githubusername = mapped_column(String(255))
     created_at = mapped_column(DateTime)
 
-    experience: Mapped[List['Experience']] = relationship(back_populates='profile')
-    education: Mapped[List['Education']] = relationship(back_populates='profile')
-    social: Mapped[List['Social']] = relationship(back_populates='profile')
+    experience: Mapped[List['Experience']] = relationship()
+    education: Mapped[List['Education']] = relationship()
+    social: Mapped[List['Social']] = relationship()
 
     account_id = mapped_column(Integer, ForeignKey('account.id'), nullable=False)

@@ -3,6 +3,10 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+__all__ = [
+    'send_mail'
+]
+
 def send_mail(to_addr: str, html: str) -> None:
     message = MIMEMultipart("alternative")
     message["Subject"] = "multipart test"

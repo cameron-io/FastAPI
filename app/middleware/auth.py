@@ -1,15 +1,20 @@
 import jwt
-from fastapi import Request
 from app.db.user import get_user_by_public_id
 from app.utils import env
+from starlette.requests import HTTPConnection
+from starlette.authentication import (
+    AuthCredentials, AuthenticationBackend, AuthenticationError, BaseUser
+)
 
-def extract_claims_from_request(request: Request):
-    token = request.cookies.get('token')
-    if token == None:
-        None
-    else:
+class AuthBackend(AuthenticationBackend):
+    async def authenticate(self, conn: HTTPConnection):
+        token = conn.cookies.get('token')
+
+        if token == None:
+            return
+        
         try:
             data = jwt.decode(token, env.getvar('SECRET_KEY'))
-            return get_user_by_public_id(data['public_id'])
+            return AuthCredentials(["authenticated"]), get_user_by_public_id(data['public_id'])
         except:
-            None
+            return AuthenticationError('Invalid basic auth credentials')

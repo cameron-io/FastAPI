@@ -8,7 +8,7 @@ from app.main import app
 async def test_root():
     async with AsyncClient(
         transport=ASGITransport(app=app),
-        base_url=f'http://{env.get('SERVER_HOST')}:{env.get('SERVER_PORT')}/'
+        base_url=f'{env.get('SERVER_URI')}/'
     ) as ac:
         response = await ac.get("/")
     assert response.status_code == 200

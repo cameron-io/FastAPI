@@ -8,7 +8,7 @@ class Account(Base):
 
     id = mapped_column(Integer, primary_key = True)
 
-    username = mapped_column(String(100))
+    name = mapped_column(String(100))
     email = mapped_column(String(70), unique = True)
 
-    profile: Mapped["Profile"] = relationship(back_populates='account')
+    profile: Mapped["Profile"] = relationship()

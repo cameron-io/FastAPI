@@ -17,14 +17,11 @@ engine = create_engine(env.getvar('DATABASE_URI'))
 Base.metadata.create_all(bind=engine)
 
 # Middleware
-from fastapi import Request
-from .middleware.auth import extract_claims_from_request
+from starlette.middleware.authentication import AuthenticationMiddleware
+from .middleware.auth import AuthBackend
 
-@app.middleware("http")
-async def auth_pre_handle(request: Request, call_next):
-    user = extract_claims_from_request(request)
-    request.path_params['user'] = user
-    return await call_next(request)
+app.add_middleware(AuthenticationMiddleware, backend=AuthBackend())
 
 # Routes
-from .api.user import *
+from app.routers import user
+app.include_router(user.router)

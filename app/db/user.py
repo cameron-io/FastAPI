@@ -1,35 +1,35 @@
-from sqlalchemy.orm import sessionmaker
-import uuid
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.main import engine
 from app.models.account import Account
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+def insert(entity):
+    with Session(engine) as session:
+        session.add(entity)
+        session.commit()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+def query_first(stmt):
+    with Session(engine) as session:
+        return session.execute(stmt).first()
 
 def get_user_by_email(user_email):
-    return Account.query\
-        .filter_by(email = user_email)\
-        .first()
+    stmt = select(Account) \
+                .filter_by(email = user_email)
+    
+    return query_first(stmt)
 
 def get_user_by_public_id(public_id):
-    return Account.query\
-                .filter_by(public_id = public_id)\
-                .first()
+    stmt = select(Account) \
+                .filter_by(public_id = public_id)
 
-def create_user_account(username, email):
+    return query_first(stmt)
+
+def create_user_account(name, email):
     # database ORM object
     account = Account(
-        public_id = str(uuid.uuid4()),
-        username = username,
+        name = name,
         email = email
     )
     # insert account
-    get_db().session.add(account)
-    get_db().session.commit()
+    insert(account)
