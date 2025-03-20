@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -28,6 +30,7 @@ def get_user_by_public_id(public_id):
 def create_user_account(name, email):
     # database ORM object
     account = Account(
+        public_id = str(uuid.uuid4()),
         name = name,
         email = email
     )

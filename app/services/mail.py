@@ -9,24 +9,19 @@ __all__ = [
 
 def send_mail(to_addr: str, html: str) -> None:
     message = MIMEMultipart("alternative")
-    message["Subject"] = "multipart test"
+    message["Subject"] = env.getvar('SERVER_NAME') + " team <no-reply@mail.com>"
     message["From"] = env.getvar('EMAIL_SENDER')
     message["To"] = to_addr
 
     mime_html = MIMEText(html, "html")
     message.attach(mime_html)
 
-    # Create a secure SSL context
-    context = ssl.create_default_context()
-
     # Try to log in to server and send email
-    try:
-        server = smtplib.SMTP(
+    with smtplib.SMTP(
             env.getvar('EMAIL_HOST'),
             int(env.getvar('EMAIL_PORT'))
-        )
-
-        server.starttls(context=context)
+        ) as server:
+        server.starttls()
 
         server.login(
             env.getvar('MAILTRAP_SANDBOX_USER'),
@@ -38,8 +33,3 @@ def send_mail(to_addr: str, html: str) -> None:
             to_addr,
             message.as_string()
         )
-    except Exception as e:
-        # Print any error messages to stdout
-        print(e)
-    finally:
-        server.quit()

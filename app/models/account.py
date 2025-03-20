@@ -7,6 +7,7 @@ class Account(Base):
     __tablename__ = 'account'
 
     id = mapped_column(Integer, primary_key = True)
+    public_id = mapped_column(String(50), unique = True)
 
     name = mapped_column(String(100))
     email = mapped_column(String(70), unique = True)

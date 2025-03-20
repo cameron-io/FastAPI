@@ -22,7 +22,7 @@ def register_user(user: Register):
         return False
 
 def login_user(user: Login):
-    account = get_user_by_email(user.email)
+    account = get_user_by_email(user.email)._asdict()['Account']
 
     if not account:
         return False
@@ -41,9 +41,15 @@ def mail_token(to_addr: str, token: str):
     html = f"""
         <html>
             <body>
-                <a href="{env.getvar('SERVER_URI')}/api/accounts/login?token={token}">
-                    Login Link
-                </a>
+                <div>
+                    <h1>Welcome to FastAPI!</h1>
+                </div>
+                <div>
+                    <h2>Get Started:</h2>
+                    <a href="{env.getvar('SERVER_URI')}/api/accounts/login?token={token}">
+                        Login Link
+                    </a>
+                </div>
             </body>
         </html>
         """
